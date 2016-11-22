@@ -36,7 +36,7 @@ module Payday::Invoiceable
 
   # A discount for this invoice
   def discount
-    if defined?(discount)
+    if defined?(discount) && discount > 0 
       discount
     else
       0
