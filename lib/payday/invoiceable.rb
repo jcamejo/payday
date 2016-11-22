@@ -35,8 +35,7 @@ module Payday::Invoiceable
   end
 
   # A discount for this invoice
-  def discount
-    binding.pry
+  def discount_amount
     if defined?(discount) && discount.present? && discount > 0 
       discount
     else
@@ -56,7 +55,7 @@ module Payday::Invoiceable
 
   # Calculates the total for this invoice.
   def total
-    subtotal + tax + shipping - discount
+    (subtotal - discount_amount) + tax + shipping 
   end
 
   def overdue?
