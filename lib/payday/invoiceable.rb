@@ -34,6 +34,15 @@ module Payday::Invoiceable
     end
   end
 
+  # A discount for this invoice
+  def discount
+    if defined?(discount)
+      discount
+    else
+      0
+    end
+  end
+
   # TODO Add a per weight unit shipping cost
   # Calculates the shipping
   def shipping
@@ -46,7 +55,7 @@ module Payday::Invoiceable
 
   # Calculates the total for this invoice.
   def total
-    subtotal + tax + shipping
+    subtotal + tax + shipping - discount
   end
 
   def overdue?
