@@ -13,6 +13,7 @@ de:
       paid_date: "Zahlungsdatum:"
       subtotal: "Zwischensumme:"
       shipping: "Versand:"
+      discount: "Rabatt:"
       tax: "Steuern:"
       total: "Gesamt:"
       notes: "Anmerkungen"

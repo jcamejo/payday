@@ -12,6 +12,7 @@ es:
       paid_date: "Pagado en:"
       subtotal: "Subtotal:"
       shipping: "Envío:"
+      discount: "Descuento:"
       tax: "Impuesto:"
       total: "Total:"
       notes: "Notas"
