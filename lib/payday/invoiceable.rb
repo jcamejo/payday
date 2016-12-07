@@ -26,7 +26,7 @@ module Payday::Invoiceable
   # The tax for this invoice, as a BigDecimal
   def tax
     if defined?(tax_rate)
-      calculated = subtotal * tax_rate
+      calculated = (subtotal - discount_amount) * tax_rate
       return 0 if calculated < 0
       calculated
     else
