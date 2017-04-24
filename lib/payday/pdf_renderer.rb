@@ -189,11 +189,13 @@ module Payday
       table_data = []
       table_data << [bold_cell(pdf, I18n.t("payday.line_item.description", default: "Description"), borders: []),
                      bold_cell(pdf, I18n.t("payday.line_item.unit_price", default: "Unit Price"), align: :center, borders: []),
+                     bold_cell(pdf, I18n.t("payday.line_item.discount", default: "Rabatt"), align: :center, borders: []),
                      bold_cell(pdf, I18n.t("payday.line_item.quantity", default: "Quantity"), align: :center, borders: []),
                      bold_cell(pdf, I18n.t("payday.line_item.amount", default: "Amount"), align: :center, borders: [])]
       invoice.line_items.each do |line|
         table_data << [line.description,
                        (line.display_price || number_to_currency(line.price, invoice)),
+                       number_to_currency(line.discount, invoice),
                        (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_s("F")),
                        number_to_currency(line.amount, invoice)]
       end
@@ -209,7 +211,7 @@ module Payday
 
         # set the column widths correctly
         natural = natural_column_widths
-        natural[0] = width - natural[1] - natural[2] - natural[3]
+        natural[0] = width - natural[1] - natural[2] - natural[3] - 40 # -40 To fix the discount column into the invoice
 
         column_widths = natural
       end
@@ -222,7 +224,7 @@ module Payday
         cell(pdf, number_to_currency(invoice.subtotal, invoice), align: :right)
       ]
 
-      if invoice.discount.present?
+      if invoice.discount.present? && invoice.discount != 0
         table_data << [
           bold_cell(pdf, I18n.t("payday.invoice.discount", default: "Discount:")),
           cell(pdf, number_to_currency(invoice.discount, invoice), align: :right)
