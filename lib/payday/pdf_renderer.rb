@@ -96,7 +96,8 @@ module Payday
 
       # render bill to
       pdf.float do
-        table = pdf.table([[bold_cell(pdf, I18n.t("payday.invoice.bill_to", default: "Bill To"))],
+        bill_to_text = invoice.invoice_type.present? ? I18n.t("payday.invoice.offer_to", default: "Offer To") : I18n.t("payday.invoice.bill_to", default: "Bill To")
+        table = pdf.table([[bold_cell(pdf, bill_to_text)],
                            [invoice.bill_to]], column_widths: [200], cell_style: bill_to_cell_style)
         bill_to_ship_to_bottom = pdf.cursor
       end
@@ -122,7 +123,8 @@ module Payday
 
       # invoice number
       if defined?(invoice.invoice_number) && invoice.invoice_number
-        table_data << [bold_cell(pdf, I18n.t("payday.invoice.invoice_no", default: "Invoice #:")),
+        invoice_number_text = invoice.invoice_type.present? ? I18n.t("payday.invoice.offer_no", default: "Offer #:", ) : I18n.t("payday.invoice.invoice_no", default: "Invoice #:")
+        table_data << [bold_cell(pdf, invoice_number_text),
                        bold_cell(pdf, invoice.invoice_number.to_s, align: :right)]
       end
 
@@ -134,7 +136,8 @@ module Payday
           invoice_date = invoice.invoice_date.to_s
         end
 
-        table_data << [bold_cell(pdf, I18n.t("payday.invoice.invoice_date", default: "Invoice Date:")),
+        invoice_date_text = invoice.invoice_type.present? ? I18n.t("payday.invoice.offer_date", default: "Date:") : I18n.t("payday.invoice.offer_date", default: "Invoice Date:")
+        table_data << [bold_cell(pdf, invoice_date_text),
                        bold_cell(pdf, invoice_date, align: :right)]
       end
 

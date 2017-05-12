@@ -6,9 +6,12 @@ de:
       refunded: ZURÜCKGEZAHLT
     invoice:
       bill_to: Rechnung an
+      offer_to: Angebot für
       ship_to: Versenden an
       invoice_no: "Rechnungsnr.:"
       invoice_date: "Rechnungsdatum:"
+      offer_no: "Angebotsnummer:"
+      offer_date: "Datum:"
       due_date: "Fälligkeit:"
       paid_date: "Zahlungsdatum:"
       subtotal: "Zwischensumme:"
