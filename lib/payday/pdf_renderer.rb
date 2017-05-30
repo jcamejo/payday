@@ -203,7 +203,9 @@ module Payday
 
         # set the column widths correctly
         natural = natural_column_widths
-        natural[0] = width - natural[1] - natural[2] - natural[3] - 40 # -40 To fix the discount column into the invoice
+        natural[0] = width - natural[1] - natural[2] - natural[3]# -40 To fix the discount column into the invoice
+        natural[0] -= 40 if discounts_present
+
 
         column_widths = natural
       end
