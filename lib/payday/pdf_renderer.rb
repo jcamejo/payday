@@ -189,19 +189,8 @@ module Payday
     end
 
     def self.line_items_table(invoice, pdf)
-      table_data = []
-      table_data << [bold_cell(pdf, I18n.t("payday.line_item.description", default: "Description"), borders: []),
-                     bold_cell(pdf, I18n.t("payday.line_item.unit_price", default: "Unit Price"), align: :center, borders: []),
-                     bold_cell(pdf, I18n.t("payday.line_item.discount", default: "Rabatt"), align: :center, borders: []),
-                     bold_cell(pdf, I18n.t("payday.line_item.quantity", default: "Quantity"), align: :center, borders: []),
-                     bold_cell(pdf, I18n.t("payday.line_item.amount", default: "Amount"), align: :center, borders: [])]
-      invoice.line_items.each do |line|
-        table_data << [line.description,
-                       (line.display_price || number_to_currency(line.price, invoice)),
-                       number_to_currency(line.discount, invoice),
-                       (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_s("F")),
-                       number_to_currency(line.amount, invoice)]
-      end
+      discounts_present = are_discounts_in_invoice?(invoice)
+      table_data = build_main_table_data(pdf, invoice, discounts_present)
 
       pdf.move_cursor_to(pdf.cursor - 20)
       pdf.table(table_data, width: pdf.bounds.width, header: true,
@@ -325,6 +314,52 @@ module Payday
       end
 
       max
+    end
+
+    def self.are_discounts_in_invoice?(invoice)
+      discounts_present = false
+      invoice.line_items.each do |line|
+        if line.discount > 0
+          discounts_present = true
+          break
+        end
+      end
+      discounts_present
+    end
+
+    def self.build_main_table_data(pdf, invoice, discounts_present = false)
+      table_data = []
+      if discounts_present
+        table_data = []
+        table_data << [bold_cell(pdf, I18n.t("payday.line_item.description", default: "Description"), borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.unit_price", default: "Unit Price"), align: :center, borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.discount", default: "Rabatt"), align: :center, borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.quantity", default: "Quantity"), align: :center, borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.amount", default: "Amount"), align: :center, borders: [])]
+
+        invoice.line_items.each do |line|
+          table_data << [line.description,
+                         (line.display_price || number_to_currency(line.price, invoice)),
+                         number_to_currency(line.discount, invoice),
+                         (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_s("F")),
+                         number_to_currency(line.amount, invoice)]
+        end
+      else
+
+        table_data << [bold_cell(pdf, I18n.t("payday.line_item.description", default: "Description"), borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.unit_price", default: "Unit Price"), align: :center, borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.quantity", default: "Quantity"), align: :center, borders: []),
+                       bold_cell(pdf, I18n.t("payday.line_item.amount", default: "Amount"), align: :center, borders: [])]
+
+        invoice.line_items.each do |line|
+          table_data << [line.description,
+                         (line.display_price || number_to_currency(line.price, invoice)),
+                         (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_s("F")),
+                         number_to_currency(line.amount, invoice)]
+        end
+      end
+
+      table_data
     end
   end
 end
