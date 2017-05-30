@@ -16,7 +16,7 @@ en:
       subtotal: "Subtotal:"
       shipping: "Shipping:"
       discount: "Discount:"
-      tax: "Tax:"
+      tax: "Tax (%{tax_rate}%):"
       total: "Total:"
     line_item:
       description: Description

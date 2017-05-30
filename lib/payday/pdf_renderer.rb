@@ -236,7 +236,7 @@ module Payday
 
       if invoice.tax_rate > 0
         if invoice.tax_description.nil?
-          tax_description = I18n.t("payday.invoice.tax", default: "Tax:")
+          tax_description = I18n.t("payday.invoice.tax", tax_rate: invoice.tax_rate * 100)
         else
           tax_description = invoice.tax_description
         end
