@@ -6,14 +6,17 @@ en:
       refunded: REFUNDED
     invoice:
       bill_to: Bill To
+      offer_to: Offer to
       ship_to: Ship To
       invoice_no: "Invoice #:"
       due_date: "Due Date:"
+      offer_no: "Offer #:"
+      offer_date: "Date"
       paid_date: "Paid Date:"
       subtotal: "Subtotal:"
       shipping: "Shipping:"
       discount: "Discount:"
-      tax: "Tax:"
+      tax: "Tax (%{tax_rate}%):"
       total: "Total:"
     line_item:
       description: Description
